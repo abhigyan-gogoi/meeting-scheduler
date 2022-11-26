@@ -11,5 +11,7 @@ public class ConsoleApp {
         MeetingScheduler meetingScheduler = new MeetingScheduler();
         Calendar calendarService = meetingScheduler.buildCalendarService();
         meetingScheduler.getAllCalendarEventsList(calendarService);
+        meetingScheduler.showTimelineBitArray(4);
+        meetingScheduler.getNoConflictPositions();
     }
 }

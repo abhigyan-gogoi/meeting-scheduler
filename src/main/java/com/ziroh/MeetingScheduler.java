@@ -14,6 +14,7 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 import com.ziroh.common.CalendarDetails;
 
+import javax.lang.model.type.ArrayType;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +31,9 @@ import java.util.regex.Pattern;
 
 public class MeetingScheduler {
     private int intervals = 4;
-    private BitSet timelineBitArray = new BitSet(24 * intervals);
+    private int bitArrayLength = 24 * intervals;
+    private BitSet timelineBitArray = new BitSet(bitArrayLength);
+    private ArrayList<Integer> positionArray = new ArrayList<>();
     private String startTimeString = "2022-11-25 00:00:00";
     private String endTimeString = "2022-11-26 00:00:00";
     private CalendarDetails calendarDetails;
@@ -202,11 +205,33 @@ public class MeetingScheduler {
 
     private void setTimelineBitArray(int interval, int steps) {
         timelineBitArray.set(interval, interval+steps);
+    }
+
+    public void showTimelineBitArray(int intervals) {
+        Boolean flag = false;
         StringBuilder bitString = new StringBuilder();
-        for (int i = 0; i < timelineBitArray.length(); i++) {
-            bitString.append(timelineBitArray.get(i) == true ? 1:0);
+        for (int i = 0; i < bitArrayLength; i++) {
+            if (timelineBitArray.get(i) == true) {
+                bitString.append(1);
+                flag = false;
+            } else {
+                bitString.append(0);
+                if (!flag) {
+//                    for (i = i; i < )`
+                    positionArray.add(i);
+                    flag = true;
+                }
+            }
+
         }
         System.out.println(bitString);
-        System.out.println(timelineBitArray.length());
+        System.out.println(bitArrayLength);
+    }
+
+    public void getNoConflictPositions() {
+        System.out.println("POSITION ARRAY: ");
+        for (int i:positionArray) {
+            System.out.println(i);
+        }
     }
 }
